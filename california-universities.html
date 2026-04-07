@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>California Universities — A Student's Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --uc: #1a4f8a;
+    --uc-light: #e8f0fa;
+    --uc-mid: #3a72b8;
+    --csu: #0d6644;
+    --csu-light: #e4f5ee;
+    --csu-mid: #1a9963;
+    --cp: #8b3318;
+    --cp-light: #faeae4;
+    --cp-mid: #c44b23;
+    --gold: #c9a84c;
+    --ink: #1a1a2e;
+    --ink2: #3d3d5c;
+    --mist: #f5f4f0;
+    --border: rgba(26,26,46,0.1);
+    --radius: 12px;
+    --radius-sm: 7px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--mist);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--ink);
+    color: #fff;
+    padding: 64px 24px 52px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 6vw, 58px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  .hero p {
+    font-size: 16px;
+    color: rgba(255,255,255,0.65);
+    max-width: 520px;
+    margin: 0 auto 28px;
+    font-weight: 300;
+  }
+  .system-pills {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .system-pill {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 14px;
+    border-radius: 99px;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.8);
+    letter-spacing: 0.02em;
+  }
+  .system-pill.uc { border-color: rgba(58,114,184,0.6); color: #7eb3e8; }
+  .system-pill.csu { border-color: rgba(26,153,99,0.6); color: #6ecfa4; }
+  .system-pill.cp { border-color: rgba(196,75,35,0.5); color: #e8a08a; }
+
+  /* MAIN LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+  /* TABS + CONTROLS */
+  .toolbar {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding: 0 20px;
+  }
+  .toolbar-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .toolbar-inner::-webkit-scrollbar { display: none; }
+  .sys-tab {
+    padding: 16px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(26,26,46,0.45);
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 2.5px solid transparent;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+  }
+  .sys-tab:hover { color: var(--ink); }
+  .sys-tab.active { color: var(--ink); }
+  .sys-tab.active.all { border-color: var(--gold); }
+  .sys-tab.active.uc { border-color: var(--uc-mid); color: var(--uc); }
+  .sys-tab.active.csu { border-color: var(--csu-mid); color: var(--csu); }
+  .sys-tab.active.cp { border-color: var(--cp-mid); color: var(--cp); }
+
+  .toolbar-divider { width: 1px; height: 20px; background: var(--border); margin: 0 8px; flex-shrink: 0; }
+
+  .view-btn {
+    padding: 7px 13px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: none;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(26,26,46,0.5);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .view-btn.active, .view-btn:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  /* SEARCH + FILTER BAR */
+  .search-bar {
+    max-width: 1100px;
+    margin: 24px auto 16px;
+    padding: 0 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .search-bar input {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    background: #fff;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-bar input:focus { border-color: var(--gold); }
+  .search-bar input::placeholder { color: rgba(26,26,46,0.35); }
+
+  .filter-chips { display: flex; gap: 6px; flex-wrap: wrap; max-width: 1100px; margin: 0 auto 20px; padding: 0 20px; }
+  .chip {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: rgba(26,26,46,0.5);
+    cursor: pointer;
+    font-weight: 400;
+    transition: all 0.15s;
+  }
+  .chip:hover { border-color: var(--ink2); color: var(--ink); }
+  .chip.active { background: var(--ink); color: #fff; border-color: var(--ink); font-weight: 500; }
+
+  /* CARD GRID */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 40px;
+  }
+
+  .campus-card {
+    background: #fff;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 20px;
+    cursor: pointer;
+    transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+    position: relative;
+    overflow: hidden;
+  }
+  .campus-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .campus-card.uc::before { background: var(--uc-mid); }
+  .campus-card.csu::before { background: var(--csu-mid); }
+  .campus-card.cp::before { background: var(--cp-mid); }
+  .campus-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(26,26,46,0.09); border-color: rgba(26,26,46,0.18); }
+
+  .card-badge {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 99px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  .card-badge.uc { background: var(--uc-light); color: var(--uc); }
+  .card-badge.csu { background: var(--csu-light); color: var(--csu); }
+  .card-badge.cp { background: var(--cp-light); color: var(--cp); }
+
+  .card-name { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; margin-bottom: 2px; line-height: 1.2; }
+  .card-city { font-size: 12px; color: rgba(26,26,46,0.45); margin-bottom: 14px; font-weight: 400; }
+
+  .card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+  .card-stat { background: var(--mist); border-radius: 7px; padding: 8px 10px; }
+  .card-stat .s-label { font-size: 10px; color: rgba(26,26,46,0.4); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+  .card-stat .s-val { font-size: 15px; font-weight: 500; color: var(--ink); }
+
+  .card-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .card-tag { font-size: 11px; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--border); color: rgba(26,26,46,0.5); }
+
+  /* MAP VIEW */
+  #map-view { display: none; max-width: 1100px; margin: 0 auto; padding: 0 20px 40px; }
+  .map-container { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; position: relative; }
+  .map-container svg { width: 100%; display: block; }
+  .map-tip {
+    position: absolute; background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 12px;
+    pointer-events: none;
+    display: none;
+    z-index: 10;
+    max-width: 180px;
+    box-shadow: 0 4px 16px rgba(26,26,46,0.1);
+    line-height: 1.5;
+  }
+  .map-tip strong { font-size: 13px; display: block; margin-bottom: 2px; color: var(--ink); }
+  .map-tip span { color: rgba(26,26,46,0.5); }
+  .map-legend { display: flex; gap: 16px; flex-wrap: wrap; padding: 12px 16px; border-top: 1px solid var(--border); font-size: 12px; color: rgba(26,26,46,0.5); align-items: center; }
+  .leg-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+
+  /* COMPARE VIEW */
+  #compare-view { display: none; max-width: 1100px; margin: 0 auto; padding: 0 20px 40px; }
+  .compare-heading { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; margin-bottom: 4px; color: var(--ink); }
+  .compare-sub { font-size: 13px; color: rgba(26,26,46,0.45); margin-bottom: 20px; }
+  .picker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; margin-bottom: 24px; }
+  .slot {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    min-height: 90px;
+    background: #fff;
+    position: relative;
+  }
+  .slot-num { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(26,26,46,0.35); margin-bottom: 8px; font-weight: 500; }
+  .slot select { width: 100%; font-family: 'DM Sans', sans-serif; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 8px; background: var(--mist); color: var(--ink); outline: none; }
+  .slot-name { font-size: 14px; font-weight: 500; margin-top: 6px; color: var(--ink); }
+  .slot-city { font-size: 11px; color: rgba(26,26,46,0.4); }
+  .slot-clear { position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 18px; cursor: pointer; color: rgba(26,26,46,0.3); line-height: 1; }
+  .slot-clear:hover { color: var(--ink); }
+  .add-slot {
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    min-height: 90px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; background: none; width: 100%;
+    font-size: 13px; color: rgba(26,26,46,0.35);
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+  .add-slot:hover { border-color: var(--ink2); color: var(--ink); background: #fff; }
+
+  .compare-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); background: #fff; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare-table th { font-weight: 500; font-size: 12px; color: rgba(26,26,46,0.5); text-align: left; padding: 14px 16px; border-bottom: 1px solid var(--border); white-space: nowrap; background: var(--mist); }
+  .compare-table th.campus-col { font-size: 14px; color: var(--ink); font-weight: 600; }
+  .compare-table td { padding: 12px 16px; border-bottom: 1px solid rgba(26,26,46,0.06); color: var(--ink); vertical-align: middle; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table .row-label { font-size: 12px; color: rgba(26,26,46,0.45); font-weight: 500; background: var(--mist); white-space: nowrap; border-right: 1px solid var(--border); }
+  .best { color: #0d6644; font-weight: 600; }
+  .worst { color: #8b3318; }
+
+  .mini-bar-wrap { display: flex; align-items: center; gap: 8px; }
+  .mini-bar-track { flex: 1; min-width: 50px; height: 5px; background: rgba(26,26,46,0.08); border-radius: 99px; position: relative; }
+  .mini-bar-fill { height: 5px; border-radius: 99px; position: absolute; left: 0; }
+  .mini-val { font-size: 12px; white-space: nowrap; }
+
+  .sat-wrap { display: flex; align-items: center; gap: 7px; }
+  .sat-track { width: 70px; height: 4px; background: rgba(26,26,46,0.08); border-radius: 99px; position: relative; display: inline-block; }
+  .sat-fill { height: 4px; border-radius: 99px; position: absolute; }
+
+  .ktags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .ktag { font-size: 11px; padding: 2px 7px; border-radius: 99px; border: 1px solid var(--border); color: rgba(26,26,46,0.5); }
+
+  .compare-empty { text-align: center; padding: 48px; color: rgba(26,26,46,0.35); font-size: 14px; }
+  .compare-legend { font-size: 11px; color: rgba(26,26,46,0.35); text-align: center; margin-top: 12px; }
+  .compare-legend .g { color: #0d6644; }
+  .compare-legend .r { color: #8b3318; }
+
+  /* MODAL */
+  .modal-bg {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(26,26,46,0.45);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-bg.open { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 28px;
+  }
+  .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+  .modal-badge { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; display: inline-block; margin-bottom: 8px; }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; line-height: 1.1; margin-bottom: 3px; }
+  .modal-city { font-size: 13px; color: rgba(26,26,46,0.45); }
+  .close-modal { background: none; border: none; font-size: 24px; cursor: pointer; color: rgba(26,26,46,0.35); line-height: 1; padding: 0 0 0 12px; }
+  .close-modal:hover { color: var(--ink); }
+
+  .modal-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+  .modal-stat { background: var(--mist); border-radius: var(--radius-sm); padding: 12px; }
+  .modal-stat .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(26,26,46,0.4); margin-bottom: 4px; }
+  .modal-stat .value { font-size: 17px; font-weight: 500; color: var(--ink); }
+
+  .modal-section-title { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(26,26,46,0.35); margin: 16px 0 8px; }
+  .modal-desc { font-size: 14px; color: rgba(26,26,46,0.65); line-height: 1.65; }
+  .modal-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .modal-tag { font-size: 12px; padding: 4px 11px; border-radius: 99px; border: 1px solid var(--border); color: rgba(26,26,46,0.55); }
+
+  .sat-bar-full { margin: 4px 0; }
+  .sat-bar-label { font-size: 12px; color: rgba(26,26,46,0.5); margin-bottom: 5px; }
+  .sat-bar-track { height: 7px; background: rgba(26,26,46,0.07); border-radius: 99px; position: relative; }
+  .sat-bar-fill { height: 7px; border-radius: 99px; position: absolute; }
+
+  .no-results { text-align: center; padding: 60px 20px; color: rgba(26,26,46,0.35); font-size: 15px; max-width: 1100px; margin: 0 auto; }
+
+  /* FOOTER */
+  footer { background: var(--ink); color: rgba(255,255,255,0.4); text-align: center; padding: 28px 20px; font-size: 12px; margin-top: 20px; }
+  footer strong { color: rgba(255,255,255,0.7); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 48px 16px 40px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .modal-stats { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-eyebrow">Your guide to higher education</div>
+  <h1>California Universities</h1>
+  <p>Explore every UC, CSU, and Cal Poly campus — search, filter, compare, and find your fit.</p>
+  <div class="system-pills">
+    <span class="system-pill uc">10 UC Campuses</span>
+    <span class="system-pill csu">23 CSU Campuses</span>
+    <span class="system-pill cp">Cal Poly SLO</span>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="toolbar-inner">
+    <button class="sys-tab active all" onclick="setSystem('all',this)">All</button>
+    <button class="sys-tab uc" onclick="setSystem('UC',this)">University of California</button>
+    <button class="sys-tab csu" onclick="setSystem('CSU',this)">California State</button>
+    <button class="sys-tab cp" onclick="setSystem('CalPoly',this)">Cal Poly</button>
+    <div class="toolbar-divider"></div>
+    <button class="view-btn active" id="vcard" onclick="setView('card')">Cards</button>
+    <button class="view-btn" id="vmap" onclick="setView('map')">Map</button>
+    <button class="view-btn" id="vcompare" onclick="setView('compare')">Compare</button>
+  </div>
+</div>
+
+<div class="search-bar">
+  <input type="text" id="search" placeholder="Search by name, city, or program (e.g. marine biology)..." oninput="render()">
+</div>
+<div class="filter-chips" id="filter-chips"></div>
+
+<!-- CARD VIEW -->
+<div id="card-view">
+  <div class="card-grid" id="card-grid"></div>
+  <div class="no-results" id="no-results" style="display:none">No campuses match your search.</div>
+</div>
+
+<!-- MAP VIEW -->
+<div id="map-view">
+  <div class="map-container">
+    <svg id="map-svg" viewBox="0 0 700 560"></svg>
+    <div class="map-tip" id="map-tip"></div>
+    <div class="map-legend">
+      <span><span class="leg-dot" style="background:var(--uc-mid)"></span>UC</span>
+      <span><span class="leg-dot" style="background:var(--csu-mid)"></span>CSU</span>
+      <span><span class="leg-dot" style="background:var(--cp-mid)"></span>Cal Poly</span>
+      <span style="margin-left:auto;font-size:11px">Circle size = enrollment &nbsp;·&nbsp; Hover to preview &nbsp;·&nbsp; Click to open</span>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARE VIEW -->
+<div id="compare-view">
+  <div style="margin-bottom:20px">
+    <div class="compare-heading">Compare campuses</div>
+    <div class="compare-sub">Select up to 4 campuses to see them side by side</div>
+  </div>
+  <div class="picker-grid" id="picker-grid"></div>
+  <div id="compare-table-area"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal-bg" onclick="closeModal(event)">
+  <div class="modal" id="modal-inner"></div>
+</div>
+
+<footer>
+  <strong>California Universities — A Student's Guide</strong><br>
+  Data reflects approximate figures from recent admissions cycles. Always verify with official campus sources.
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+const campuses = [
+  {id:"ucb",system:"UC",name:"UC Berkeley",short:"Berkeley",city:"Berkeley",founded:1868,enrollment:45057,acceptance:11,gpa:4.15,satLo:1310,satHi:1540,type:"Research",setting:"Urban",known:["Engineering","Law","Business","Public Policy","Sciences"],tuition:"$14,312 in-state",mascot:"Oski the Bear",desc:"The flagship of the UC system and a global leader in research and public education, situated in the Bay Area.",lat:37.872,lng:-122.259},
+  {id:"ucla",system:"UC",name:"UCLA",short:"UCLA",city:"Los Angeles",founded:1919,enrollment:47310,acceptance:9,gpa:4.18,satLo:1290,satHi:1530,type:"Research",setting:"Urban",known:["Film","Medicine","Law","Engineering","Business"],tuition:"$13,804 in-state",mascot:"Joe & Josephine Bruin",desc:"A world-class research university embedded in the heart of Los Angeles, renowned for both academics and athletics.",lat:34.069,lng:-118.445},
+  {id:"ucsb",system:"UC",name:"UC Santa Barbara",short:"UCSB",city:"Santa Barbara",founded:1891,enrollment:26314,acceptance:26,gpa:4.05,satLo:1270,satHi:1510,type:"Research",setting:"Coastal",known:["Physics","Env. Science","Chemistry","Music","Economics"],tuition:"$14,312 in-state",mascot:"Olé the Gaucho",desc:"A research powerhouse perched on a coastal bluff, home to multiple Nobel laureates and renowned STEM programs.",lat:34.414,lng:-119.848},
+  {id:"ucsd",system:"UC",name:"UC San Diego",short:"UCSD",city:"La Jolla",founded:1960,enrollment:42006,acceptance:24,gpa:4.10,satLo:1290,satHi:1530,type:"Research",setting:"Coastal",known:["Biomedical","Engineering","Oceanography","Cognitive Science","CS"],tuition:"$14,312 in-state",mascot:"King Triton",desc:"A cutting-edge research institution in coastal La Jolla, globally recognized in science, engineering, and medicine.",lat:32.880,lng:-117.234},
+  {id:"ucd",system:"UC",name:"UC Davis",short:"UC Davis",city:"Davis",founded:1905,enrollment:40031,acceptance:39,gpa:4.03,satLo:1200,satHi:1470,type:"Research",setting:"College Town",known:["Agriculture","Vet Medicine","Env. Science","Brewing","Viticulture"],tuition:"$14,312 in-state",mascot:"Gunrock the Mustang",desc:"A top agricultural and biological sciences university set in the Central Valley, with a strong sustainability mission.",lat:38.542,lng:-121.749},
+  {id:"uci",system:"UC",name:"UC Irvine",short:"UCI",city:"Irvine",founded:1965,enrollment:35937,acceptance:21,gpa:4.07,satLo:1230,satHi:1490,type:"Research",setting:"Suburban",known:["Informatics","Social Ecology","Business","Bio Sciences","Public Health"],tuition:"$13,727 in-state",mascot:"Peter the Anteater",desc:"A dynamic UC campus in Orange County known for innovation in technology, social science, and health research.",lat:33.646,lng:-117.843},
+  {id:"ucsc",system:"UC",name:"UC Santa Cruz",short:"UCSC",city:"Santa Cruz",founded:1965,enrollment:19700,acceptance:47,gpa:3.85,satLo:1150,satHi:1430,type:"Research",setting:"Forest/Coastal",known:["Astronomy","CS","Film","Env. Studies","Marine Biology"],tuition:"$14,312 in-state",mascot:"Sammy the Banana Slug",desc:"A progressive campus in the redwoods overlooking Monterey Bay, known for interdisciplinary learning and research.",lat:36.988,lng:-122.058},
+  {id:"ucr",system:"UC",name:"UC Riverside",short:"UCR",city:"Riverside",founded:1954,enrollment:26791,acceptance:66,gpa:3.76,satLo:1090,satHi:1360,type:"Research",setting:"Suburban",known:["Entomology","Plant Sciences","Business","Public Policy","Creative Writing"],tuition:"$14,312 in-state",mascot:"Scotty the Bear",desc:"A diverse UC campus in the Inland Empire with deep roots in agriculture and growing strength across disciplines.",lat:33.973,lng:-117.328},
+  {id:"ucm",system:"UC",name:"UC Merced",short:"UC Merced",city:"Merced",founded:2005,enrollment:9103,acceptance:72,gpa:3.50,satLo:1020,satHi:1290,type:"Research",setting:"College Town",known:["Sustainability","Engineering","Cognitive Science","Natural Sciences","Social Sciences"],tuition:"$14,312 in-state",mascot:"Rue the Bear Cub",desc:"The newest UC campus, opened in 2005, with a mission to expand access and a focus on sustainability and research.",lat:37.365,lng:-120.423},
+  {id:"ucsf",system:"UC",name:"UCSF",short:"UCSF",city:"San Francisco",founded:1864,enrollment:3140,acceptance:3,gpa:null,satLo:null,satHi:null,type:"Health Sciences",setting:"Urban",known:["Medicine","Pharmacy","Dentistry","Nursing","Global Health"],tuition:"Varies by program",mascot:"N/A (graduate only)",desc:"The only UC dedicated entirely to health sciences, consistently ranked among the world's best medical schools.",lat:37.763,lng:-122.458},
+  {id:"sdsu",system:"CSU",name:"San Diego State",short:"SDSU",city:"San Diego",founded:1897,enrollment:37276,acceptance:35,gpa:3.75,satLo:1100,satHi:1330,type:"Teaching/Research",setting:"Urban",known:["Business","Engineering","Public Health","Communications","Sciences"],tuition:"$7,928 in-state",mascot:"Aztec Warrior",desc:"One of the largest and most selective CSUs, SDSU is a rising research university with a vibrant campus in San Diego.",lat:32.776,lng:-117.071},
+  {id:"csulb",system:"CSU",name:"Cal State Long Beach",short:"CSULB",city:"Long Beach",founded:1949,enrollment:38155,acceptance:39,gpa:3.55,satLo:1020,satHi:1260,type:"Teaching",setting:"Suburban",known:["Engineering","Business","Film","Nursing","Design"],tuition:"$6,994 in-state",mascot:"Elbee the Beach",desc:"One of the most popular CSU campuses, known for its diverse student body, arts programs, and strong career outcomes.",lat:33.784,lng:-118.114},
+  {id:"csun",system:"CSU",name:"Cal State Northridge",short:"CSUN",city:"Northridge",founded:1958,enrollment:36911,acceptance:46,gpa:3.30,satLo:960,satHi:1200,type:"Teaching",setting:"Suburban",known:["Business","Film/TV","Deaf Studies","Engineering","Music"],tuition:"$7,176 in-state",mascot:"Matty the Matador",desc:"Located in the San Fernando Valley near LA, CSUN is a leader in accessibility and campus diversity.",lat:34.241,lng:-118.528},
+  {id:"csuf",system:"CSU",name:"Cal State Fullerton",short:"CSUF",city:"Fullerton",founded:1957,enrollment:40386,acceptance:47,gpa:3.45,satLo:1000,satHi:1230,type:"Teaching",setting:"Suburban",known:["Business","Communications","Kinesiology","Music","Engineering"],tuition:"$7,142 in-state",mascot:"Tuffy the Titan",desc:"The largest CSU campus by enrollment, Fullerton serves a large commuter population in Orange County.",lat:33.882,lng:-117.885},
+  {id:"sfsu",system:"CSU",name:"SF State",short:"SFSU",city:"San Francisco",founded:1899,enrollment:22770,acceptance:60,gpa:3.20,satLo:950,satHi:1180,type:"Teaching",setting:"Urban",known:["Film","Creative Writing","Social Work","Hospitality","Liberal Studies"],tuition:"$7,060 in-state",mascot:"Gator",desc:"A uniquely progressive campus in San Francisco with deep ties to the city's arts and cultural communities.",lat:37.724,lng:-122.478},
+  {id:"csula",system:"CSU",name:"Cal State LA",short:"CSULA",city:"Los Angeles",founded:1947,enrollment:25928,acceptance:61,gpa:3.10,satLo:900,satHi:1150,type:"Teaching",setting:"Urban",known:["Business","Engineering","Criminal Justice","Nursing","Education"],tuition:"$6,994 in-state",mascot:"Golden Eagle",desc:"A diverse urban university in East Los Angeles, serving a large first-generation student population.",lat:34.068,lng:-118.168},
+  {id:"csusm",system:"CSU",name:"Cal State San Marcos",short:"CSUSM",city:"San Marcos",founded:1989,enrollment:15843,acceptance:67,gpa:3.30,satLo:960,satHi:1190,type:"Teaching",setting:"Suburban",known:["Business","Nursing","CS","Liberal Studies","Psychology"],tuition:"$7,060 in-state",mascot:"Cougar",desc:"A newer CSU campus north of San Diego, growing rapidly with strong regional industry partnerships.",lat:33.130,lng:-117.158},
+  {id:"csueb",system:"CSU",name:"Cal State East Bay",short:"CSUEB",city:"Hayward",founded:1957,enrollment:13918,acceptance:80,gpa:3.10,satLo:890,satHi:1140,type:"Teaching",setting:"Suburban",known:["Business","Nursing","CS","Education","Kinesiology"],tuition:"$7,060 in-state",mascot:"Pioneer Pete",desc:"Located in the East Bay hills overlooking the San Francisco Bay, emphasizing access and diversity.",lat:37.658,lng:-122.059},
+  {id:"csusb",system:"CSU",name:"Cal State San Bernardino",short:"CSUSB",city:"San Bernardino",founded:1965,enrollment:19677,acceptance:77,gpa:3.20,satLo:900,satHi:1130,type:"Teaching",setting:"Suburban",known:["Business","Criminal Justice","Psychology","Nursing","Social Work"],tuition:"$7,060 in-state",mascot:"Coyote Willie",desc:"Serving the Inland Empire, CSUSB provides vital higher education access to a large underserved region.",lat:34.183,lng:-117.323},
+  {id:"csudh",system:"CSU",name:"Cal State Dominguez Hills",short:"CSUDH",city:"Carson",founded:1960,enrollment:16165,acceptance:90,gpa:3.00,satLo:840,satHi:1090,type:"Teaching",setting:"Suburban",known:["Nursing","Business","Humanities","Social Work","Public Admin"],tuition:"$6,994 in-state",mascot:"Toro the Bull",desc:"A highly accessible campus in the South Bay region of LA, known for serving working adults and veterans.",lat:33.864,lng:-118.258},
+  {id:"csuchico",system:"CSU",name:"Chico State",short:"Chico State",city:"Chico",founded:1887,enrollment:15462,acceptance:72,gpa:3.35,satLo:990,satHi:1220,type:"Teaching",setting:"College Town",known:["Agriculture","Business","Nursing","CS","Engineering"],tuition:"$7,060 in-state",mascot:"Willie the Wildcat",desc:"One of the oldest CSUs, Chico State sits in a beautiful college town in Northern California's Sacramento Valley.",lat:39.729,lng:-121.847},
+  {id:"humboldt",system:"CSU",name:"Cal Poly Humboldt",short:"Humboldt",city:"Arcata",founded:1913,enrollment:6035,acceptance:84,gpa:3.25,satLo:990,satHi:1220,type:"Teaching",setting:"Rural",known:["Env. Science","Marine Biology","Forestry","Native American Studies","Kinesiology"],tuition:"$7,060 in-state",mascot:"Lumberjack",desc:"Nestled in the forests of far Northern California, now the CSU system's newest polytechnic campus.",lat:40.876,lng:-124.082},
+  {id:"csusac",system:"CSU",name:"Sacramento State",short:"Sac State",city:"Sacramento",founded:1947,enrollment:30523,acceptance:73,gpa:3.30,satLo:960,satHi:1200,type:"Teaching",setting:"Urban",known:["Business","Criminal Justice","Nursing","Government","Education"],tuition:"$7,060 in-state",mascot:"Herky the Hornet",desc:"The capital city's university, preparing students for careers in government, business, and health.",lat:38.562,lng:-121.423},
+  {id:"csufres",system:"CSU",name:"Fresno State",short:"Fresno State",city:"Fresno",founded:1911,enrollment:24988,acceptance:56,gpa:3.40,satLo:980,satHi:1220,type:"Teaching",setting:"Urban",known:["Agriculture","Engineering","Business","Education","Viticulture"],tuition:"$7,060 in-state",mascot:"Henry the Bulldog",desc:"The flagship university of the Central Valley, deeply tied to the region's agriculture and diverse communities.",lat:36.812,lng:-119.747},
+  {id:"csubak",system:"CSU",name:"CSU Bakersfield",short:"CSUB",city:"Bakersfield",founded:1970,enrollment:10651,acceptance:89,gpa:3.05,satLo:840,satHi:1080,type:"Teaching",setting:"Urban",known:["Business","Criminal Justice","Nursing","Liberal Studies","Engineering"],tuition:"$7,060 in-state",mascot:"Rowdy the Runner",desc:"A small but growing CSU campus serving the southern San Joaquin Valley.",lat:35.350,lng:-119.105},
+  {id:"csumon",system:"CSU",name:"CSU Monterey Bay",short:"CSUMB",city:"Seaside",founded:1994,enrollment:7528,acceptance:77,gpa:3.25,satLo:960,satHi:1180,type:"Teaching",setting:"Coastal",known:["Marine Science","Env. Science","Business","Nursing","CS"],tuition:"$7,060 in-state",mascot:"Otterbot",desc:"A young CSU campus on a former military base near Monterey Bay, known for environmental programs.",lat:36.654,lng:-121.800},
+  {id:"csuchan",system:"CSU",name:"CSU Channel Islands",short:"CSUCI",city:"Camarillo",founded:2002,enrollment:7138,acceptance:82,gpa:3.20,satLo:940,satHi:1160,type:"Teaching",setting:"Suburban",known:["Business","Liberal Studies","CS","Nursing","Env. Science"],tuition:"$7,060 in-state",mascot:"Dolfin",desc:"The newest traditional CSU campus, serving Ventura County with an intimate, interdisciplinary approach.",lat:34.178,lng:-119.043},
+  {id:"csustan",system:"CSU",name:"CSU Stanislaus",short:"Stan State",city:"Turlock",founded:1957,enrollment:10702,acceptance:78,gpa:3.25,satLo:930,satHi:1160,type:"Teaching",setting:"College Town",known:["Business","Criminal Justice","Nursing","Education","Psychology"],tuition:"$7,060 in-state",mascot:"The Warrior",desc:"A close-knit campus in the Central Valley emphasizing civic engagement and regional impact.",lat:37.524,lng:-120.864},
+  {id:"csupom",system:"CSU",name:"Cal Poly Pomona",short:"CPP",city:"Pomona",founded:1938,enrollment:27833,acceptance:55,gpa:3.60,satLo:1040,satHi:1280,type:"Polytechnic",setting:"Suburban",known:["Engineering","Architecture","Business","Hospitality","Agriculture"],tuition:"$7,060 in-state",mascot:"Bronco Billy",desc:"A polytechnic university in the Inland Empire with a learn-by-doing philosophy and California's largest university farm.",lat:34.058,lng:-117.821},
+  {id:"cpslo",system:"CalPoly",name:"Cal Poly San Luis Obispo",short:"Cal Poly SLO",city:"San Luis Obispo",founded:1901,enrollment:22013,acceptance:31,gpa:4.01,satLo:1250,satHi:1490,type:"Polytechnic",setting:"College Town",known:["Engineering","Architecture","Agriculture","CS","Business"],tuition:"$10,116 in-state",mascot:"Musty the Mustang",desc:"Consistently ranked the top public polytechnic in the West. Learn by doing.",lat:35.300,lng:-120.663},
+];
+
+let currentSystem = 'all';
+let currentFilter = 'all';
+let currentView = 'card';
+let compareSelected = ['ucb','ucla'];
+
+function sysColor(sys){ return sys==='UC'?'#3a72b8':sys==='CSU'?'#1a9963':'#c44b23'; }
+function sysCls(sys){ return sys==='UC'?'uc':sys==='CSU'?'csu':'cp'; }
+function sysLabel(sys){ return sys==='CalPoly'?'Cal Poly':sys; }
+
+function setSystem(s, el) {
+  currentSystem = s;
+  currentFilter = 'all';
+  document.querySelectorAll('.sys-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  buildChips();
+  render();
+  if (currentView === 'map') drawMap();
+}
+
+function setView(v) {
+  currentView = v;
+  ['card','map','compare'].forEach(x => {
+    document.getElementById(x+'-view').style.display = 'none';
+    document.getElementById('v'+x).classList.remove('active');
+  });
+  document.getElementById(v+'-view').style.display = 'block';
+  document.getElementById('v'+v).classList.add('active');
+  if (v === 'map') drawMap();
+  if (v === 'compare') renderCompare();
+}
+
+function getFiltered() {
+  const q = document.getElementById('search').value.toLowerCase();
+  return campuses.filter(c => {
+    const ms = currentSystem==='all' || c.system===currentSystem;
+    const mf = currentFilter==='all' || c.setting===currentFilter;
+    const mq = !q || c.name.toLowerCase().includes(q) || c.city.toLowerCase().includes(q) || c.known.some(k=>k.toLowerCase().includes(q)) || c.type.toLowerCase().includes(q);
+    return ms && mf && mq;
+  });
+}
+
+function buildChips() {
+  const settings = [...new Set(campuses.filter(c=>currentSystem==='all'||c.system===currentSystem).map(c=>c.setting))].sort();
+  const row = document.getElementById('filter-chips');
+  row.innerHTML = `<button class="chip ${currentFilter==='all'?'active':''}" onclick="setFilter('all')">All settings</button>`
+    + settings.map(s=>`<button class="chip ${currentFilter===s?'active':''}" onclick="setFilter('${s}')">${s}</button>`).join('');
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  buildChips();
+  render();
+  if (currentView==='map') drawMap();
+}
+
+function render() {
+  const data = getFiltered();
+  const grid = document.getElementById('card-grid');
+  const none = document.getElementById('no-results');
+  if (!data.length) { grid.innerHTML=''; none.style.display='block'; return; }
+  none.style.display = 'none';
+  grid.innerHTML = data.map(c => {
+    const cls = sysCls(c.system);
+    return `<div class="campus-card ${cls}" onclick="openModal('${c.id}')">
+      <span class="card-badge ${cls}">${sysLabel(c.system)} · ${c.type}</span>
+      <div class="card-name">${c.name}</div>
+      <div class="card-city">${c.city} &nbsp;·&nbsp; Est. ${c.founded}</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="s-label">Enrollment</div><div class="s-val">${c.enrollment.toLocaleString()}</div></div>
+        <div class="card-stat"><div class="s-label">Acceptance</div><div class="s-val">${c.acceptance}%</div></div>
+        <div class="card-stat"><div class="s-label">Avg GPA</div><div class="s-val">${c.gpa!=null?c.gpa.toFixed(2):'N/A'}</div></div>
+        <div class="card-stat"><div class="s-label">SAT range</div><div class="s-val" style="font-size:13px">${c.satLo?c.satLo+'–'+c.satHi:'Grad'}</div></div>
+      </div>
+      <div class="card-tags">${c.known.slice(0,3).map(k=>`<span class="card-tag">${k}</span>`).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+function openModal(id) {
+  const c = campuses.find(x=>x.id===id);
+  const cls = sysCls(c.system);
+  const color = sysColor(c.system);
+  let satHtml = '<span style="font-size:13px;color:rgba(26,26,46,0.4)">Graduate program — SAT not applicable</span>';
+  if (c.satLo) {
+    const lp = ((c.satLo-400)/1200*100).toFixed(1);
+    const wp = ((c.satHi-c.satLo)/1200*100).toFixed(1);
+    satHtml = `<div class="sat-bar-label">Middle 50%: ${c.satLo}–${c.satHi} <span style="color:rgba(26,26,46,0.35);font-size:11px">(400–1600 scale)</span></div>
+    <div class="sat-bar-track"><div class="sat-bar-fill" style="left:${lp}%;width:${wp}%;background:${color}"></div></div>`;
+  }
+  document.getElementById('modal-inner').innerHTML = `
+    <div class="modal-header">
+      <div>
+        <span class="modal-badge ${cls}" style="background:var(--${cls==='uc'?'uc':cls==='csu'?'csu':'cp'}-light);color:var(--${cls==='uc'?'uc':cls==='csu'?'csu':'cp'})">${sysLabel(c.system)} · ${c.type}</span>
+        <div class="modal-title">${c.name}</div>
+        <div class="modal-city">${c.city}, California &nbsp;·&nbsp; Founded ${c.founded} &nbsp;·&nbsp; ${c.setting}</div>
+      </div>
+      <button class="close-modal" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-stats">
+      <div class="modal-stat"><div class="label">Enrollment</div><div class="value">${c.enrollment.toLocaleString()}</div></div>
+      <div class="modal-stat"><div class="label">Acceptance</div><div class="value">${c.acceptance}%</div></div>
+      <div class="modal-stat"><div class="label">Avg GPA</div><div class="value">${c.gpa!=null?c.gpa.toFixed(2):'N/A'}</div></div>
+      <div class="modal-stat"><div class="label">In-state tuition</div><div class="value" style="font-size:13px">${c.tuition}</div></div>
+      <div class="modal-stat"><div class="label">Mascot</div><div class="value" style="font-size:12px;line-height:1.3">${c.mascot}</div></div>
+      <div class="modal-stat"><div class="label">Setting</div><div class="value" style="font-size:14px">${c.setting}</div></div>
+    </div>
+    <div class="modal-section-title">SAT scores (middle 50%)</div>
+    <div class="sat-bar-full" style="margin-bottom:16px">${satHtml}</div>
+    <div class="modal-section-title">About</div>
+    <div class="modal-desc" style="margin-bottom:16px">${c.desc}</div>
+    <div class="modal-section-title">Known for</div>
+    <div class="modal-tags">${c.known.map(k=>`<span class="modal-tag">${k}</span>`).join('')}</div>
+  `;
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function closeModal(e) {
+  if (!e || e.target===document.getElementById('modal-bg'))
+    document.getElementById('modal-bg').classList.remove('open');
+}
+
+function drawMap() {
+  const svg = d3.select('#map-svg');
+  svg.selectAll('*').remove();
+  const data = getFiltered();
+  const proj = d3.geoMercator().center([-119.5,37.3]).scale(2200).translate([350,280]);
+  const tip = document.getElementById('map-tip');
+
+  svg.append('rect').attr('width',700).attr('height',560).attr('fill','#f5f4f0');
+
+  d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(us => {
+    const features = topojson.feature(us, us.objects.states).features.filter(f=>f.properties.name==='California');
+    const path = d3.geoPath(proj);
+    svg.selectAll('path.state').data(features).join('path')
+      .attr('class','state').attr('d',path)
+      .attr('fill','#fff').attr('stroke','rgba(26,26,46,0.12)').attr('stroke-width',0.8);
+  }).catch(()=>{}).finally(()=>{
+    svg.selectAll('circle').data(data).join('circle')
+      .attr('cx',d=>proj([d.lng,d.lat])[0])
+      .attr('cy',d=>proj([d.lng,d.lat])[1])
+      .attr('r',d=>5+Math.sqrt(d.enrollment/8000)*2.2)
+      .attr('fill',d=>sysColor(d.system))
+      .attr('fill-opacity',0.82)
+      .attr('stroke','#fff').attr('stroke-width',1.8)
+      .style('cursor','pointer')
+      .on('mouseover',function(event,d){
+        tip.style.display='block';
+        tip.innerHTML=`<strong>${d.name}</strong><span>${d.city}</span><br>GPA ${d.gpa!=null?d.gpa.toFixed(2):'N/A'} &nbsp;·&nbsp; ${d.acceptance}% acceptance<br>SAT ${d.satLo?d.satLo+'–'+d.satHi:'Grad only'}`;
+        const rect=document.getElementById('map-svg').getBoundingClientRect();
+        const x=proj([d.lng,d.lat])[0]/700*rect.width;
+        const y=proj([d.lng,d.lat])[1]/560*rect.height;
+        tip.style.left=Math.min(x+14,rect.width-195)+'px';
+        tip.style.top=Math.max(y-70,6)+'px';
+      })
+      .on('mouseout',()=>tip.style.display='none')
+      .on('click',(e,d)=>{tip.style.display='none';openModal(d.id);});
+
+    svg.selectAll('text.lbl').data(data).join('text')
+      .attr('x',d=>proj([d.lng,d.lat])[0])
+      .attr('y',d=>proj([d.lng,d.lat])[1]-(8+Math.sqrt(d.enrollment/8000)*2.2))
+      .attr('text-anchor','middle').attr('font-size','8.5')
+      .attr('fill','rgba(26,26,46,0.45)').attr('pointer-events','none')
+      .attr('font-family','DM Sans, sans-serif')
+      .text(d=>d.short);
+  });
+}
+
+// COMPARE
+function renderCompare() {
+  renderPickers();
+}
+
+function renderPickers() {
+  const grid = document.getElementById('picker-grid');
+  grid.innerHTML = '';
+  compareSelected.forEach((id,i) => {
+    const c = campuses.find(x=>x.id===id);
+    const opts = campuses.map(x=>`<option value="${x.id}" ${x.id===id?'selected':''}>${x.name} (${x.city})</option>`).join('');
+    const div = document.createElement('div');
+    div.className = 'slot';
+    div.innerHTML = `<div class="slot-num">Campus ${i+1}</div>
+      <select onchange="swapSlot(${i},this.value)">${opts}</select>
+      <div class="slot-name">${c.name}</div>
+      <div class="slot-city">${c.city} &nbsp;·&nbsp; <span class="card-badge ${sysCls(c.system)}" style="font-size:10px;padding:2px 7px">${sysLabel(c.system)}</span></div>
+      <button class="slot-clear" onclick="removeSlot(${i})">×</button>`;
+    grid.appendChild(div);
+  });
+  if (compareSelected.length < 4) {
+    const btn = document.createElement('button');
+    btn.className = 'add-slot';
+    btn.textContent = '+ Add campus';
+    btn.onclick = addSlot;
+    grid.appendChild(btn);
+  }
+  renderCompareTable();
+}
+
+function addSlot() {
+  const used = new Set(compareSelected);
+  const next = campuses.find(c=>!used.has(c.id));
+  if (next) { compareSelected.push(next.id); renderPickers(); }
+}
+function removeSlot(i) { compareSelected.splice(i,1); renderPickers(); }
+function swapSlot(i,id) { compareSelected[i]=id; renderPickers(); }
+
+function hlClasses(vals, hiGood) {
+  const nums = vals.map(v=>v===null?null:parseFloat(v));
+  const valid = nums.filter(v=>v!==null);
+  if (valid.length < 2) return vals.map(()=>'');
+  const best = hiGood ? Math.max(...valid) : Math.min(...valid);
+  const worst = hiGood ? Math.min(...valid) : Math.max(...valid);
+  return nums.map(v => {
+    if (v===null) return '';
+    if (v===best) return 'best';
+    if (valid.length >= 3 && v===worst) return 'worst';
+    return '';
+  });
+}
+
+function miniBar(val, min, max, color, label) {
+  if (val===null) return '<span style="color:rgba(26,26,46,0.35);font-size:12px">N/A</span>';
+  const pct = Math.round((val-min)/(max-min)*100);
+  return `<div class="mini-bar-wrap"><div class="mini-bar-track"><div class="mini-bar-fill" style="width:${pct}%;background:${color}"></div></div><span class="mini-val">${label}</span></div>`;
+}
+function satCell(lo,hi,color) {
+  if (!lo) return '<span style="font-size:12px;color:rgba(26,26,46,0.35)">Grad only</span>';
+  const lp=((lo-400)/1200*100).toFixed(1), wp=((hi-lo)/1200*100).toFixed(1);
+  return `<div class="sat-wrap"><div class="sat-track" style="width:76px"><div class="sat-fill" style="left:${lp}%;width:${wp}%;background:${color}"></div></div><span style="font-size:12px">${lo}–${hi}</span></div>`;
+}
+
+function renderCompareTable() {
+  const area = document.getElementById('compare-table-area');
+  if (compareSelected.length < 2) {
+    area.innerHTML = '<div class="compare-empty">Select at least 2 campuses to compare</div>';
+    return;
+  }
+  const cs = compareSelected.map(id=>campuses.find(x=>x.id===id));
+  const thCells = `<th class="row-label"></th>` + cs.map(c=>`<th class="campus-col" style="min-width:140px">${c.short}<div style="font-size:11px;font-weight:400;color:rgba(26,26,46,0.4)">${c.city}</div></th>`).join('');
+
+  const rows = [
+    {label:'System', fn: c=>`<span class="card-badge ${sysCls(c.system)}" style="font-size:10px">${sysLabel(c.system)}</span>`},
+    {label:'Type', fn: c=>`<span style="font-size:12px;color:rgba(26,26,46,0.5)">${c.type}</span>`},
+    {label:'Setting', fn: c=>c.setting},
+    {label:'Founded', fn: c=>c.founded},
+    {label:'Enrollment', fn:(c,i,hl)=>`<span class="${hl[i]}">${c.enrollment.toLocaleString()}</span>`, vals:cs.map(c=>c.enrollment), hi:true},
+    {label:'Acceptance rate', fn:(c,i)=>miniBar(c.acceptance,3,92,sysColor(c.system),c.acceptance+'%')},
+    {label:'Avg GPA', fn:(c,i,hl)=>c.gpa!=null?`<span class="${hl[i]}">${c.gpa.toFixed(2)}</span>`:'<span style="color:rgba(26,26,46,0.35);font-size:12px">N/A</span>', vals:cs.map(c=>c.gpa), hi:true},
+    {label:'SAT range', fn:(c)=>satCell(c.satLo,c.satHi,sysColor(c.system))},
+    {label:'In-state tuition', fn:c=>`<span style="font-size:13px">${c.tuition}</span>`},
+    {label:'Mascot', fn:c=>`<span style="font-size:12px;color:rgba(26,26,46,0.5)">${c.mascot}</span>`},
+    {label:'Known for', fn:c=>`<div class="ktags">${c.known.map(k=>`<span class="ktag">${k}</span>`).join('')}</div>`},
+    {label:'About', fn:c=>`<span style="font-size:12px;color:rgba(26,26,46,0.5);line-height:1.55;display:block">${c.desc}</span>`},
+  ];
+
+  const rowHtml = rows.map(r => {
+    const hls = r.vals ? hlClasses(r.vals, r.hi) : cs.map(()=>'');
+    return `<tr><td class="row-label">${r.label}</td>${cs.map((c,i)=>`<td>${r.fn(c,i,hls)}</td>`).join('')}</tr>`;
+  }).join('');
+
+  area.innerHTML = `
+    <div class="compare-table-wrap">
+      <table class="compare-table">
+        <thead><tr>${thCells}</tr></thead>
+        <tbody>${rowHtml}</tbody>
+      </table>
+    </div>
+    <div class="compare-legend" style="margin-top:10px">
+      <span class="g">Green</span> = best in group &nbsp;·&nbsp; <span class="r">Red</span> = lowest in group (3+ campuses)
+    </div>`;
+}
+
+buildChips();
+render();
+</script>
+</body>
+</html>
